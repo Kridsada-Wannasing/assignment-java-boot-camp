@@ -1,8 +1,9 @@
 package com.example.javaspringbootpractice.carts;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import com.example.javaspringbootpractice.products.Product;
+
+import javax.persistence.*;
+import java.util.Optional;
 
 @Entity
 public class Cart {
@@ -12,17 +13,26 @@ public class Cart {
     private int id;
     private int userId;
 
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "productId", nullable = false)
+    private Product product;
+
+    private int amount;
 
     public Cart() {}
 
     public Cart(CartBody cartBody) {
         this.userId = cartBody.getUserId();
-        this.productId = cartBody.getProductId();
         this.amount = cartBody.getAmount();
     }
-
-    private int productId;
-    private int amount;
 
     public int getId() {
         return id;
@@ -38,14 +48,6 @@ public class Cart {
 
     public void setUserId(int userId) {
         this.userId = userId;
-    }
-
-    public int getProductId() {
-        return productId;
-    }
-
-    public void setProductId(int productId) {
-        this.productId = productId;
     }
 
     public int getAmount() {
